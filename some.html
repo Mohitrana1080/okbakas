@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>For my baka❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* Floating hearts */
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            animation: floatUp linear infinite;
+            bottom: -10px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 3rem;
+            text-shadow: 0 0 20px #ff4d6d, 0 0 40px #ff758f;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff758f; }
+            to { text-shadow: 0 0 25px #ff1e56, 0 0 50px #ff4d6d; }
+        }
+
+        p {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            min-height: 50px;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .show-images-btn, .play-music-btn {
+            background: #fff;
+            color: #ff4d6d;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .show-images-btn:hover, .play-music-btn:hover {
+            background: #ff4d6d;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* Music */
+        .music-player {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: none; /* Initially hidden */
+        }
+
+        /* Picture Popup */
+        .picture-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .picture-popup.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .picture-popup-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+        }
+
+        .picture-popup img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .picture-popup img.active {
+            opacity: 1;
+        }
+
+        .picture-popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 0 0 5px #000;
+            z-index: 40;
+        }
+
+        .picture-popup .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 40;
+            transition: background 0.2s ease;
+        }
+
+        .picture-popup .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .picture-popup .prev-btn { left: 20px; }
+        .picture-popup .next-btn { right: 20px; }
+
+        /* Popup love letter */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            z-index: 20;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: pop 0.4s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-content h2 {
+            color: #ff1e56;
+            margin-bottom: 15px;
+        }
+
+        .popup-content p {
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+
+        .popup-content button {
+            background: #ff4d6d;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .popup-content button:hover { background: #ff1e56; }
+
+        footer {
+            margin-top: 30px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .show-images-btn, .play-music-btn { padding: 10px 20px; font-size: 1rem; }
+            p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <h1>For My Baka ❤️</h1>
+    <p id="loveLetterText"></p>
+
+    <div class="btn-container">
+        <button class="show-images-btn" onclick="openPicturePopup()">View Our Photos</button>
+        <button class="play-music-btn" onclick="playMusic()">Play Music 🎵</button>
+    </div>
+
+    <div class="music-player" id="musicPlayer">
+        <audio id="audioPlayer" loop>
+            <source src="Dil Ka Jo Haal Hai _ Besharam.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <h2>💌 My Love Letter to You 💌</h2>
+            <p id="typedText"></p>
+            <button onclick="closePopup()">Aww 🥰</button>
+        </div>
+    </div>
+
+    <div class="picture-popup" id="picturePopup">
+        <span class="close-btn" onclick="closePicturePopup()">&times;</span>
+        <button class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</button>
+        <img id="popupImage" src="" alt="Photo">
+        <button class="nav-btn next-btn" onclick="changeImage(1)">&#10095;</button>
+    </div>
+
+    <footer>Made with 💖 just for you</footer>
+
+    <script>
+        // Colorful floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.fontSize = (10 + Math.random() * 30) + 'px';
+            heart.style.color = `hsl(${Math.random() * 360}, 70%, 70%)`;
+            const duration = 4 + Math.random() * 4;
+            heart.style.animationDuration = duration + 's';
+            heart.innerText = '❤️';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+        setInterval(createHeart, 300);
+
+        // Love letter popup with typing effect
+        const letterText = "Aap khud nhi janti ho aap kitni pyari ho ❤️ ❤️ ❤️ Jaan ho humari per jaan se piyaari ho ❤️ Duriyon ke hone se koi karf nhi padta aap kal bhi humari thi or aaj be humari ho....❤️✨.  meri piyari baka I LOVE U ❤️ mwhaa ";
+        function typeText(element, text, speed = 50) {
+            let i = 0;
+            function typing() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            typing();
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById("popup").style.visibility = "visible";
+                typeText(document.getElementById("typedText"), letterText, 40);
+            }, 2000);
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.visibility = "hidden";
+        }
+
+        // Music play function
+        function playMusic() {
+            const player = document.getElementById("musicPlayer");
+            const audio = document.getElementById("audioPlayer");
+            player.style.display = "block";
+            audio.play().catch(error => {
+                console.log("Autoplay was prevented. User interaction is required.");
+            });
+        }
+
+        // Picture popup functionality
+        const images = ["pic1.jpg", "pic2.jpg", "pic3.jpg", "pic4.jpg", "pic5.jpg", "pic6.jpg", "pic7.jpg", "pic8.jpg", "pic9.jpg", "pic10.jpg", "pic11.jpg", "pic12.jpg", "pic13.jpg", "pic14.jpg", "pic15.jpg", "pic16.jpg", "pic17.jpg", "pic18.jpg","https://ih1.redbubble.net/image.5453974390.3539/fposter,small,wall_texture,square_product,600x600.jpg"];
+        let currentImageIndex = 0;
+        let slideshowInterval;
+        const picturePopup = document.getElementById("picturePopup");
+        const popupImage = document.getElementById("popupImage");
+
+        function openPicturePopup() {
+            currentImageIndex = 0;
+            updateImage();
+            picturePopup.classList.add("active");
+
+            // Start auto-shifting the photos
+            slideshowInterval = setInterval(() => {
+                changeImage(1);
+            }, 3000); // Shifts every 4 seconds
+        }
+
+        function closePicturePopup() {
+            picturePopup.classList.remove("active");
+            // Stop the auto-shifting timer when the popup is closed
+            clearInterval(slideshowInterval);
+        }
+
+        function updateImage() {
+            popupImage.classList.remove("active");
+            setTimeout(() => {
+                popupImage.src = images[currentImageIndex];
+                popupImage.classList.add("active");
+            }, 50); // Small delay to allow CSS transition to reset
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex >= images.length) {
+                currentImageIndex = 0;
+            } else if (currentImageIndex < 0) {
+                currentImageIndex = images.length - 1;
+            }
+            updateImage();
+        }
+    </script>
+</body>
+</html>
